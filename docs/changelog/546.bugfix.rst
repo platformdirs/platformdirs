@@ -1,0 +1,2 @@
+Read ``PUBLIC`` before the home directory in :func:`~platformdirs.user_publicshare_dir` on Windows, so it no longer
+raises ``RuntimeError`` when ``PUBLIC`` is set and the home directory cannot be determined - by :user:`emme1t`.

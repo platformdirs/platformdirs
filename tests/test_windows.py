@@ -112,6 +112,18 @@ def test_windows(params: dict[str, Any], func: str) -> None:
     assert result == expected_map[func]
 
 
+def test_publicshare_dir_with_unavailable_home(monkeypatch: pytest.MonkeyPatch, mocker: MockerFixture) -> None:
+    monkeypatch.setenv("PUBLIC", r"C:\Users\Shared")
+    mocker.patch.object(Path, "expanduser", side_effect=RuntimeError("Could not determine home directory."))
+    assert Windows().user_publicshare_dir == os.path.normpath(r"C:\Users\Shared")
+
+
+def test_publicshare_dir_fallback(monkeypatch: pytest.MonkeyPatch, mocker: MockerFixture) -> None:
+    monkeypatch.delenv("PUBLIC", raising=False)
+    mocker.patch.object(Path, "expanduser", return_value=Path("C:/Users/Test"))
+    assert Windows().user_publicshare_dir == os.path.normpath("C:/Users/Public")
+
+
 def test_roaming_uses_appdata(mocker: MockerFixture) -> None:
     mock = mocker.patch("platformdirs.windows.get_win_folder", side_effect=lambda csidl: _WIN_FOLDERS[csidl])
     _result = Windows(appname="foo", roaming=True).user_data_dir
