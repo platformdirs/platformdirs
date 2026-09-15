@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Any, Final
 
 import pytest
 
+import platformdirs
 from platformdirs.macos import MacOS
 
 if TYPE_CHECKING:
@@ -178,6 +179,16 @@ def test_macos_homebrew(
         expected = expected_path_map[site_func] if site_func.endswith("_path") else expected_map[site_func]
 
         assert result == expected
+
+
+@pytest.mark.usefixtures("_clear_xdg_env", "_homebrew_py_prefix")
+@pytest.mark.parametrize("suffix", ["dir", "path"])
+@pytest.mark.parametrize("name", ["site_data", "site_config", "site_cache", "site_applications"])
+def test_multipath_reaches_the_module_function(mocker: MockerFixture, name: str, suffix: str) -> None:
+    mocker.patch("platformdirs.PlatformDirs", MacOS)
+    function = getattr(platformdirs, f"{name}_{suffix}")
+    expected = getattr(MacOS(appname="foo", multipath=True), f"{name}_{suffix}")
+    assert function(appname="foo", multipath=True) == expected
 
 
 @pytest.mark.parametrize(

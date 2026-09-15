@@ -75,8 +75,8 @@ class PlatformDirsABC(ABC):  # ruff:ignore[too-many-public-methods]
         self.multipath = multipath
         """An optional parameter which indicates that the entire list of data dirs should be returned.
 
-        By default, the first item would only be returned. Only affects ``site_data_dir`` and ``site_config_dir`` on
-        Unix and macOS.
+        When ``False``, only the first item is returned. Affects ``site_data_dir``, ``site_config_dir`` and
+        ``site_applications_dir`` on Unix and macOS, and ``site_cache_dir`` on macOS under Homebrew.
 
         """
         self.opinion = opinion

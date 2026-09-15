@@ -1,0 +1,3 @@
+Accept ``multipath`` in :func:`~platformdirs.site_cache_dir` and :func:`~platformdirs.site_cache_path`. Without it, the
+function API could not return the Homebrew cache prefix that :attr:`~platformdirs.macos.MacOS.site_cache_dir` adds under
+``multipath`` - by :user:`darrenhuai`.
