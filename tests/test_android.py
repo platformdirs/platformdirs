@@ -170,6 +170,13 @@ def test_android_folder_not_found(mocker: MockerFixture, monkeypatch: pytest.Mon
     assert _android_folder() is None
 
 
+@pytest.mark.parametrize("prop", ["user_data_dir", "user_config_dir", "user_cache_dir", "user_bin_dir"])
+def test_android_folder_not_found_raises(mocker: MockerFixture, prop: str) -> None:
+    mocker.patch("platformdirs.android._android_folder", return_value=None, autospec=True)
+    with pytest.raises(RuntimeError, match=r"^cannot find the Android app folder"):
+        getattr(Android(appname="foo"), prop)
+
+
 @pytest.mark.parametrize(
     ("prop", "subdir"),
     [

@@ -1,0 +1,2 @@
+Raise ``RuntimeError`` from :class:`~platformdirs.android.Android` directories when the app folder cannot be found,
+instead of ``TypeError: expected str, bytes or os.PathLike object, not NoneType`` - by :user:`Str0k`.
